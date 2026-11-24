@@ -10,7 +10,6 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
 
         <div>
-
             <h2 class="fw-bold mb-1">
                 Tarif Parkir
             </h2>
@@ -18,52 +17,76 @@
             <p class="mb-0" style="color: #a0aec0;">
                 Kelola tarif parkir E-PARKIR
             </p>
-
         </div>
 
+        <!-- TAMBAH TARIF -->
+        <a href="{{ route('admin.tarif.create') }}"
+           class="btn"
+           style="
+                background-color: #7c3aed;
+                color: white;
+                border-radius: 8px;
+           ">
 
-        <!-- TOMBOL TAMBAH -->
-<a href="{{ route('admin.tarif.create') }}"
-   class="btn"
-   style="background-color: #7c3aed; color: white;">
-    <i class="bi bi-plus-lg"></i> Tambah Tarif
-</a>
+            <i class="bi bi-plus-lg"></i>
+            Tambah Tarif
+
+        </a>
 
     </div>
 
 
+    <!-- PESAN BERHASIL -->
+    @if(session('success'))
 
-    <!-- CARD TARIF -->
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
 
-    <div
-        class="card"
-        style="
+    @endif
+
+
+    <!-- PESAN ERROR -->
+    @if($errors->any())
+
+        <div class="alert alert-danger">
+
+            <ul class="mb-0">
+
+                @foreach($errors->all() as $error)
+
+                    <li>{{ $error }}</li>
+
+                @endforeach
+
+            </ul>
+
+        </div>
+
+    @endif
+
+
+    <!-- CARD -->
+    <div class="card"
+         style="
             background-color: #161129 !important;
             border: 1px solid rgba(124, 58, 237, 0.25) !important;
             border-radius: 16px;
-        "
-    >
+         ">
 
         <div class="card-body p-4">
 
-
-            <!-- TABEL -->
-
             <div class="table-responsive">
 
-                <table
-                    class="table align-middle mb-0"
-                    style="color: white;"
-                >
+                <table class="table align-middle mb-0"
+                       style="color: white;">
 
                     <thead>
 
-                        <tr
-                            style="
-                                background-color: #1d1535;
-                                border-bottom: 1px solid #2b2145;
-                            "
-                        >
+                        <tr style="
+                            background-color: #1d1535;
+                            border-bottom: 1px solid #2b2145;
+                        ">
 
                             <th class="py-3 px-3">
                                 No
@@ -75,10 +98,6 @@
 
                             <th class="py-3">
                                 Tarif Per Jam
-                            </th>
-
-                            <th class="py-3">
-                                Tarif Harian
                             </th>
 
                             <th class="py-3">
@@ -96,224 +115,116 @@
 
                     <tbody>
 
+                        @forelse($tarifs as $tarif)
 
-                        <!-- DATA 1 -->
-
-                        <tr
-                            style="
+                            <tr style="
                                 border-bottom: 1px solid #2b2145;
-                            "
-                        >
+                            ">
 
-                            <td class="px-3">
-                                1
-                            </td>
+                                <!-- NO -->
+                                <td class="px-3">
+                                    {{ $loop->iteration }}
+                                </td>
 
-                            <td>
-                                Motor
-                            </td>
 
-                            <td>
-                                Rp 3.000
-                            </td>
+                                <!-- JENIS KENDARAAN -->
+                                <td>
 
-                            <td>
-                                Rp 20.000
-                            </td>
+                                    {{ ucfirst($tarif->jenis_kendaraan) }}
 
-                            <td>
+                                </td>
 
-                                <span
-                                    class="badge px-3 py-2"
-                                    style="
-                                        background-color: #22c55e;
-                                        border-radius: 7px;
-                                    "
-                                >
 
-                                    Aktif
+                                <!-- TARIF -->
+                                <td>
 
-                                </span>
+                                    Rp
+                                    {{ number_format($tarif->tarif_per_jam, 0, ',', '.') }}
 
-                            </td>
+                                </td>
 
-                            <td class="text-center">
 
-                                <button
-                                    class="btn btn-sm me-2"
-                                    style="
-                                        background-color: #7c3aed;
-                                        color: white;
-                                    "
-                                >
+                                <!-- STATUS -->
+                                <td>
 
-                                    <i class="bi bi-pencil"></i>
+                                    <span class="badge px-3 py-2"
+                                          style="
+                                            background-color: #22c55e;
+                                            border-radius: 7px;
+                                          ">
 
-                                </button>
+                                        Aktif
 
+                                    </span>
 
-                                <button
-                                    class="btn btn-sm"
-                                    style="
-                                        background-color: #e6294d;
-                                        color: white;
-                                    "
-                                >
+                                </td>
 
-                                    <i class="bi bi-trash"></i>
 
-                                </button>
+                                <!-- AKSI -->
+                                <td class="text-center">
 
-                            </td>
+                                    <!-- EDIT -->
+                                    <button type="button"
+                                            class="btn btn-sm me-2"
+                                            style="
+                                                background-color: #7c3aed;
+                                                color: white;
+                                                border-radius: 7px;
+                                            "
+                                            disabled
+                                            title="Fitur edit belum dibuat">
 
-                        </tr>
+                                        <i class="bi bi-pencil"></i>
 
+                                    </button>
 
 
-                        <!-- DATA 2 -->
+                                    <!-- HAPUS -->
+                                    <form action="{{ route('admin.tarif.destroy', $tarif->id_tarif) }}"
+                                          method="POST"
+                                          style="display: inline;">
 
-                        <tr
-                            style="
-                                border-bottom: 1px solid #2b2145;
-                            "
-                        >
+                                        @csrf
 
-                            <td class="px-3">
-                                2
-                            </td>
+                                        @method('DELETE')
 
-                            <td>
-                                Mobil
-                            </td>
+                                        <button type="button"
+                                                class="btn btn-sm"
+                                                style="
+                                                    background-color: #7c3aed;
+                                                    color: white;
+                                                    border-radius: 7px;
+                                                "
+                                                onclick="bukaModalHapus(this.form)">
 
-                            <td>
-                                Rp 5.000
-                            </td>
+                                            <i class="bi bi-trash"></i>
 
-                            <td>
-                                Rp 35.000
-                            </td>
+                                        </button>
 
-                            <td>
+                                    </form>
 
-                                <span
-                                    class="badge px-3 py-2"
-                                    style="
-                                        background-color: #22c55e;
-                                        border-radius: 7px;
-                                    "
-                                >
+                                </td>
 
-                                    Aktif
+                            </tr>
 
-                                </span>
 
-                            </td>
+                        @empty
 
-                            <td class="text-center">
+                            <tr>
 
-                                <button
-                                    class="btn btn-sm me-2"
-                                    style="
-                                        background-color: #7c3aed;
-                                        color: white;
-                                    "
-                                >
+                                <td colspan="5"
+                                    class="text-center py-5"
+                                    style="color: #a0aec0;">
 
-                                    <i class="bi bi-pencil"></i>
+                                    <i class="bi bi-inbox fs-2 d-block mb-2"></i>
 
-                                </button>
+                                    Belum ada data tarif.
 
+                                </td>
 
-                                <button
-                                    class="btn btn-sm"
-                                    style="
-                                        background-color: #e6294d;
-                                        color: white;
-                                    "
-                                >
+                            </tr>
 
-                                    <i class="bi bi-trash"></i>
-
-                                </button>
-
-                            </td>
-
-                        </tr>
-
-
-
-                        <!-- DATA 3 -->
-
-                        <tr
-                            style="
-                                border-bottom: 1px solid #2b2145;
-                            "
-                        >
-
-                            <td class="px-3">
-                                3
-                            </td>
-
-                            <td>
-                                Truk / Bus
-                            </td>
-
-                            <td>
-                                Rp 10.000
-                            </td>
-
-                            <td>
-                                Rp 60.000
-                            </td>
-
-                            <td>
-
-                                <span
-                                    class="badge px-3 py-2"
-                                    style="
-                                        background-color: #22c55e;
-                                        border-radius: 7px;
-                                    "
-                                >
-
-                                    Aktif
-
-                                </span>
-
-                            </td>
-
-                            <td class="text-center">
-
-                                <button
-                                    class="btn btn-sm me-2"
-                                    style="
-                                        background-color: #7c3aed;
-                                        color: white;
-                                    "
-                                >
-
-                                    <i class="bi bi-pencil"></i>
-
-                                </button>
-
-
-                                <button
-                                    class="btn btn-sm"
-                                    style="
-                                        background-color: #e6294d;
-                                        color: white;
-                                    "
-                                >
-
-                                    <i class="bi bi-trash"></i>
-
-                                </button>
-
-                            </td>
-
-                        </tr>
-
+                        @endforelse
 
                     </tbody>
 
@@ -322,66 +233,20 @@
             </div>
 
 
+            <!-- JUMLAH DATA -->
+            <div class="mt-3"
+                 style="
+                    color: #a0aec0;
+                    font-size: 14px;
+                 ">
 
-            <!-- FOOTER -->
+                Menampilkan
 
-            <div class="d-flex justify-content-between align-items-center mt-3">
+                <strong style="color: white;">
+                    {{ $tarifs->count() }}
+                </strong>
 
-                <div
-                    style="
-                        color: #a0aec0;
-                        font-size: 14px;
-                    "
-                >
-
-                    Menampilkan 1 - 3 dari 3 data
-
-                </div>
-
-
-                <div class="d-flex gap-2">
-
-                    <button
-                        class="btn btn-sm"
-                        style="
-                            background-color: #100b20;
-                            border: 1px solid #2b2145;
-                            color: #a0aec0;
-                        "
-                    >
-
-                        <i class="bi bi-chevron-left"></i>
-
-                    </button>
-
-
-                    <button
-                        class="btn btn-sm"
-                        style="
-                            background-color: #7c3aed;
-                            color: white;
-                        "
-                    >
-
-                        1
-
-                    </button>
-
-
-                    <button
-                        class="btn btn-sm"
-                        style="
-                            background-color: #100b20;
-                            border: 1px solid #2b2145;
-                            color: #a0aec0;
-                        "
-                    >
-
-                        <i class="bi bi-chevron-right"></i>
-
-                    </button>
-
-                </div>
+                data tarif
 
             </div>
 
@@ -390,5 +255,135 @@
     </div>
 
 </div>
+
+
+<!-- ===================================================== -->
+<!-- MODAL HAPUS -->
+<!-- ===================================================== -->
+
+<div id="modalHapus"
+     style="
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.75);
+        z-index: 99999;
+        align-items: center;
+        justify-content: center;
+     ">
+
+    <div style="
+        width: 400px;
+        max-width: 90%;
+        background: #161129;
+        border: 1px solid #7c3aed;
+        border-radius: 18px;
+        padding: 30px;
+        text-align: center;
+        color: white;
+        box-shadow: 0 15px 50px rgba(0,0,0,0.6);
+    ">
+
+        <!-- ICON -->
+        <div style="
+            font-size: 55px;
+            color: #a855f7;
+            margin-bottom: 10px;
+        ">
+
+            <i class="bi bi-exclamation-circle"></i>
+
+        </div>
+
+
+        <!-- JUDUL -->
+        <h4 class="fw-bold">
+            Yakin ingin menghapus?
+        </h4>
+
+
+        <!-- KETERANGAN -->
+        <p style="color: #a0aec0;">
+
+            Data tarif ini akan dihapus dan
+            tidak dapat dikembalikan.
+
+        </p>
+
+
+        <!-- TOMBOL -->
+        <div class="mt-4">
+
+            <!-- BATAL -->
+            <button type="button"
+                    onclick="tutupModalHapus()"
+                    style="
+                        border: none;
+                        padding: 10px 20px;
+                        border-radius: 8px;
+                        background: #2b2145;
+                        color: white;
+                        margin-right: 8px;
+                    ">
+
+                Batal
+
+            </button>
+
+
+            <!-- YA HAPUS -->
+            <button type="button"
+                    onclick="lanjutkanHapus()"
+                    style="
+                        border: none;
+                        padding: 10px 20px;
+                        border-radius: 8px;
+                        background: #7c3aed;
+                        color: white;
+                    ">
+
+                Ya, Hapus
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    let formHapus = null;
+
+
+    function bukaModalHapus(form)
+    {
+        formHapus = form;
+
+        document.getElementById('modalHapus').style.display = 'flex';
+    }
+
+
+    function tutupModalHapus()
+    {
+        document.getElementById('modalHapus').style.display = 'none';
+
+        formHapus = null;
+    }
+
+
+    function lanjutkanHapus()
+    {
+        if (formHapus) {
+
+            formHapus.submit();
+
+        }
+    }
+
+</script>
+
 
 @endsection

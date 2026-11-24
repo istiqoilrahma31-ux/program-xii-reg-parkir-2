@@ -41,4 +41,16 @@ class TarifController extends Controller
             ->route('admin.tarif')
             ->with('success', 'Tarif berhasil ditambahkan!');
     }
+
+    // HAPUS TARIF
+    public function destroy($id)
+    {
+        DB::table('tb_tarif')
+            ->where('id_tarif', $id)
+            ->delete();
+
+        return redirect()
+            ->route('admin.tarif')
+            ->with('success', 'Tarif berhasil dihapus!');
+    }
 }

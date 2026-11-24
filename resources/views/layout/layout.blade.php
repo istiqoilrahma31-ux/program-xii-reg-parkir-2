@@ -12,7 +12,9 @@
 
     <!-- BOOTSTRAP ICON -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-
+     
+    <!-- FONT POPPINS -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
 
@@ -21,10 +23,10 @@
         ========================= */
 
         body {
-            background-color: #0f0b1e;
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+    background-color: #0f0b1e;
+    color: #ffffff;
+    font-family: 'Poppins', sans-serif;
+}
 
 
         /* =========================
@@ -264,49 +266,39 @@
 
 
 
-                <!-- AREA PARKIR -->
-
-                <a
-                    href="#"
-                    class="menu"
-                >
-
-                    <i class="bi bi-grid-fill me-3 fs-5"></i>
-
-                    Area Parkir
-
-                </a>
+    
+<!-- AREA PARKIR -->
+<a href="{{ route('admin.area') }}" class="menu">
+    <i class="bi bi-grid-fill me-3 fs-5"></i>
+    Area Parkir
+</a>
+           
 
 
 
-                <!-- KENDARAAN -->
 
-                <a
-                    href="#"
-                    class="menu"
-                >
+<!-- KENDARAAN -->
+ 
 
-                    <i class="bi bi-car-front-fill me-3 fs-5"></i>
+<!-- KENDARAAN -->
 
-                    Kendaraan
-
-                </a>
-
-
+<a
+    href="{{ route('admin.kendaraan') }}"
+    class="menu {{ request()->is('admin/kendaraan') ? 'active' : '' }}"
+>
+    <i class="bi bi-car-front-fill me-3 fs-5"></i>
+    Data Kendaraan
+</a>
 
                 <!-- LOG AKTIVITAS -->
 
-                <a
-                    href="#"
-                    class="menu"
-                >
-
-                    <i class="bi bi-clock-history me-3 fs-5"></i>
-
-                    Log Aktivitas
-
-                </a>
-
+               <a
+    href="{{ route('admin.log') }}"
+    class="menu {{ request()->is('admin/log') ? 'active' : '' }}"
+>
+    <i class="bi bi-clock-history me-3 fs-5"></i>
+    Log Aktivitas
+</a>
 
             </div>
 
@@ -314,20 +306,44 @@
 
 
 
-        <!-- =====================================================
-             PROFIL BAWAH
-        ====================================================== -->
+      
+<!-- PROFIL BAWAH -->
+<div class="p-3 m-3"
+     style="
+        background-color: #211936;
+        border-radius: 14px;
+        border: 1px solid rgba(255,255,255,0.05);
+     ">
 
-        <div
-            class="p-3 m-3"
-            style="
-                background-color: #1f1838;
-                border-radius: 12px;
-                border: 1px solid rgba(255,255,255,0.05);
-            "
-        >
+    <div class="mb-3">
 
-            <div class="d-flex justify-content-between align-items-center">
+        <div class="fw-bold text-white"
+             style="font-size: 14px;">
+            {{ session('nama_lengkap', 'Admin E-Parkir') }}
+        </div>
+
+        <div class="mt-1"
+             style="font-size: 12px; color: #c084fc;">
+            Administrator
+        </div>
+
+    </div>
+
+    <form action="{{ route('logout') }}" method="POST">
+        @csrf
+
+        <button type="submit"
+                class="btn btn-danger w-100 d-flex align-items-center justify-content-center gap-2"
+                style="font-size: 13px; font-weight: 500;">
+
+            <i class="bi bi-box-arrow-right"></i>
+            Logout
+
+        </button>
+    </form>
+
+</div>
+
 
 
                 <!-- PROFIL -->
@@ -384,28 +400,13 @@
 
                 <!-- LOGOUT -->
 
-                <form
-                    action="/logout"
-                    method="POST"
-                    class="m-0"
-                >
-
-                    @csrf
-
-                    <button
-                        type="submit"
-                        class="btn text-white p-0 border-0 bg-transparent"
-                        title="Logout"
-                    >
-
-                        <i
-                            class="bi bi-box-arrow-right fs-5"
-                            style="color: #a0aec0;"
-                        ></i>
-
-                    </button>
-
-                </form>
+               <form action="{{ route('logout') }}" method="POST" class="m-0">
+    @csrf
+    <button type="submit" class="btn btn-danger btn-sm d-flex align-items-center gap-1">
+        <i class="bi bi-box-arrow-right"></i>
+        Logout
+    </button>
+</form>
 
 
             </div>
